@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { marketplaceHrefForLabel } from "@/lib/marketplace";
 
 export function ExploreMarketplace() {
   const categories = [
@@ -31,7 +32,7 @@ export function ExploreMarketplace() {
           {categories.map((category, index) => (
             <Link
               key={index}
-              href={`/marketplace?category=${encodeURIComponent(category.name)}`}
+              href={marketplaceHrefForLabel(category.name)}
               className="group bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-[#12b76a] transition-all"
               data-aos="fade-up"
               data-aos-delay={index * 50}

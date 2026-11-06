@@ -5,6 +5,7 @@ import { CheckBadgeIcon, StarIcon } from "@heroicons/react/24/solid";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useSaaSRecommendationsModal } from "@/contexts/SaaSRecommendationsModalContext";
+import { categoryPath } from "@/lib/marketplace";
 
 interface MarketplaceCardProps {
   vendor: {
@@ -15,7 +16,7 @@ interface MarketplaceCardProps {
     logo: string;
     image?: string;
     rating?: number;
-    verified: boolean;
+    verified?: boolean;
     pricing?: string;
     features?: string[];
     website?: string;
@@ -77,10 +78,14 @@ export function MarketplaceCard({ vendor, index = 0 }: MarketplaceCardProps) {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-lg font-semibold text-gray-900 transition-colors line-clamp-1">
-                {vendor.name}
+                <Link href={`/marketplace/${vendor.id}`} className="hover:text-[#12b76a]">
+                  {vendor.name}
+                </Link>
               </h3>
               <p className="text-xs text-gray-500 mt-1 line-clamp-1">
-                {vendor.category}
+                <Link href={categoryPath(vendor.category)} className="hover:text-gray-700">
+                  {vendor.category}
+                </Link>
               </p>
               {/* {vendor.rating && (
                 <div className="flex items-center gap-1 mt-1">

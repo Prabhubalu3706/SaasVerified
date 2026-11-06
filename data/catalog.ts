@@ -3,6 +3,8 @@
  * Contains categories and vendors with their details
  */
 
+import { toSlug } from "@/lib/slugs";
+
 export interface Vendor {
   name: string;
   url: string;
@@ -2223,5 +2225,5 @@ export const getAllVendorsWithCategory = (): VendorWithCategory[] => {
 
 export const getVendorDetailById = (id: string): Vendor | undefined => {
   const allVendors = getAllVendors();
-  return allVendors.find(v => v.name.toLowerCase().replace(/\s+/g, '-') === id);
+  return allVendors.find((vendor) => toSlug(vendor.name) === id);
 };

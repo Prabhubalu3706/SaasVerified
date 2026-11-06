@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { ContactHero } from "@/components/contact/ContactHero";
 import { ContactInfo } from "@/components/contact/ContactInfo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact Us | SaasVerified",
-  description: "Get in touch with SaasVerified to discuss how we can help grow your business. Contact us today for a free consultation.",
-  openGraph: {
-    title: "Contact Us | SaasVerified",
-    description: "Get in touch with SaasVerified to discuss how we can help grow your business.",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Contact",
+  description:
+    "Contact SaaS Verify about buyer shortlists, vendor verification, or Refund Assurance. Email hello@saasverify.com.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

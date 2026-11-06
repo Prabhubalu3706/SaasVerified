@@ -5,6 +5,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@/components/Analytics";
 import { ConditionalNavbar } from "@/components/ui/ConditionalNavbar";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { absoluteUrl, LOGO_PATH, SITE_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_PROFILES } from "@/lib/seo";
 
 const plusJakartaSans = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
@@ -13,23 +15,20 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "SaasVerified - Grow Your Business Faster",
-    template: "%s | SaasVerified",
+    default: "SaaS Verify | Find and buy the right software",
+    template: "%s | SaaS Verify",
   },
-  description: "Transform your business with our innovative solutions. Reach more customers, grow faster, and achieve your goals with SEO-optimized strategies.",
-  keywords: ["business growth", "SEO optimization", "digital marketing", "business solutions"],
-  authors: [{ name: "SaasVerified" }],
-  creator: "SaasVerified",
-  publisher: "SaasVerified",
+  description: SITE_DESCRIPTION,
+  keywords: ["SaaS Verify", "verified SaaS", "software marketplace", "SaaS vendor verification", "buyer protection"],
+  authors: [{ name: "SaaS Verify" }],
+  creator: "SaaS Verify",
+  publisher: "SaaS Verify",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
-  alternates: {
-    canonical: "/",
-  },
+  metadataBase: new URL(SITE_URL),
   icons: {
     icon: "/assets/SaaS_ico.png",
     shortcut: "/assets/SaaS_ico.png",
@@ -39,15 +38,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "SaasVerified - Grow Your Business Faster",
-    description: "Transform your business with our innovative solutions. Reach more customers, grow faster, and achieve your goals.",
-    siteName: "SaasVerified",
+    title: "SaaS Verify | Find and buy the right software",
+    description: SITE_DESCRIPTION,
+    siteName: SITE_NAME,
   },
   twitter: {
     card: "summary_large_image",
-    title: "SaasVerified - Grow Your Business Faster",
-    description: "Transform your business with our innovative solutions.",
-    creator: "@saasverified",
+    title: "SaaS Verify | Find and buy the right software",
+    description: SITE_DESCRIPTION,
   },
   robots: {
     index: true,
@@ -89,7 +87,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-W2FR6R59');`,
           }}
         />
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"} />
       </head>
       <body className={`${plusJakartaSans.className} max-w-full`}>
         <noscript>
@@ -107,25 +104,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <main className="min-h-screen max-w-full">{children}</main>
           </ConditionalNavbar>
         </Providers>
-        {/* JSON-LD Structured Data */}
-        <Script
-          id="json-ld-organization"
-          type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "SaasVerified",
-              url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-              logo: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/logo.png`,
-              description: "Transform your business with our innovative solutions.",
-              sameAs: [
-                "https://twitter.com/saasverified",
-                "https://facebook.com/saasverified",
-                "https://linkedin.com/company/saasverified",
-              ],
-            }),
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Organization",
+                "@id": `${absoluteUrl("/")}#organization`,
+                name: SITE_NAME,
+                url: absoluteUrl("/"),
+                logo: absoluteUrl(LOGO_PATH),
+                email: "hello@saasverify.com",
+                description: SITE_DESCRIPTION,
+                sameAs: SOCIAL_PROFILES,
+              },
+              {
+                "@type": "WebSite",
+                "@id": `${absoluteUrl("/")}#website`,
+                name: SITE_NAME,
+                url: absoluteUrl("/"),
+                description: SITE_DESCRIPTION,
+                publisher: { "@id": `${absoluteUrl("/")}#organization` },
+              },
+            ],
           }}
         />
         {/* Tawk.to Live Chat Script */}

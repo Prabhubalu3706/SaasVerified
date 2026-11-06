@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { TermsTableOfContents } from "@/components/common/TermsTableOfContents";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Refund Policy",
-  description: "Refund & Buyer Protection Policy for SaaS Verify - Learn about our assurance program and refund terms.",
-  openGraph: {
-    title: "Refund Policy | SaaS Verify",
-    description: "Refund & Buyer Protection Policy for SaaS Verify",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Refund policy",
+  description:
+    "Refund Assurance and buyer protection terms for purchases made with SaaS Verify.",
+  path: "/refund",
+});
 
 export default function RefundPage() {
   const currentDate = new Date().toLocaleDateString('en-US', { 

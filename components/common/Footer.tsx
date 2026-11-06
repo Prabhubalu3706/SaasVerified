@@ -30,10 +30,9 @@ export function Footer({ showCTA = false }: FooterProps) {
       <div className="absolute inset-0">
         <Image
           src="/assets/footer-bg.png"
-          alt="Footer Background"
+          alt=""
           fill
           className="object-cover object-top"
-          priority
         />
       </div>
 
@@ -72,11 +71,10 @@ export function Footer({ showCTA = false }: FooterProps) {
                 <div className="relative w-36 h-14">
                   <Image
                     src="/assets/saas-verified-logo.png"
-                    alt="SaaS Verify Logo"
+                    alt="SaaS Verify"
                     width={144}
                     height={56}
                     className="w-full h-full object-contain"
-                    priority
                   />
                 </div>
               </Link>
@@ -205,16 +203,6 @@ export function Footer({ showCTA = false }: FooterProps) {
                     rel="noreferrer"
                     className="hover:text-gray-900"
                   >
-                    X (Twitter)
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="https://www.linkedin.com/company/saasverify"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-gray-900"
-                  >
                     LinkedIn
                   </Link>
                 </li>
@@ -236,7 +224,7 @@ export function Footer({ showCTA = false }: FooterProps) {
           <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-5 md:px-6 lg:px-8 w-full py-4">
             <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between">
               <p className="text-base text-[#676d79] mb-4 sm:mb-0 text-center sm:text-left">
-                © 2025 SaaSVerify. All rights reserved.
+                © {new Date().getFullYear()} SaaS Verify. All rights reserved.
               </p>
               <div className="flex items-center gap-1">
                 <svg className="w-4 h-4 text-[#9195a2]" fill="currentColor" viewBox="0 0 24 24">

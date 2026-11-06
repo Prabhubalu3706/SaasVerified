@@ -3,17 +3,14 @@ import { AboutHero } from "@/components/about/AboutHero";
 import { WhyWeExist } from "@/components/about/WhyWeExist";
 import { OurMission } from "@/components/about/OurMission";
 import { FoundingStory } from "@/components/about/FoundingStory";
-// import { Leadership } from "@/components/about/Leadership";
-// import { TrustedBy } from "@/components/about/TrustedBy";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description: "Learn about SaaS Verify and our mission to bring transparency to software procurement through comprehensive verification and trusted insights.",
-  openGraph: {
-    title: "About Us | SaaS Verify",
-    description: "Learn about SaaS Verify and our mission to bring transparency to software procurement.",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "About",
+  description:
+    "Learn about SaaS Verify and our mission to bring transparency to software procurement through independent verification.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

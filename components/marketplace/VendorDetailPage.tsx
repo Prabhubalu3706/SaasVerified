@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CheckCircleIcon, StarIcon, ShieldCheckIcon } from "@heroicons/react/24/solid";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { resolveCategory } from "@/lib/marketplace";
 
 interface VendorDetail {
   id: string;
@@ -77,6 +77,7 @@ function IntegrationLogo({ name, logo }: { name: string; logo: string }) {
 }
 
 export function VendorDetailPage({ vendor }: VendorDetailPageProps) {
+  const categoryLink = resolveCategory(vendor.category);
   const getTierBadgeColor = (tier?: string) => {
     switch (tier) {
       case "Platinum":
@@ -111,13 +112,23 @@ export function VendorDetailPage({ vendor }: VendorDetailPageProps) {
     <div className="min-h-screen pt-32 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6 lg:px-8 w-full">
         {/* Back Button */}
-        <Link
-          href="/marketplace"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors"
-        >
-          <ArrowLeftIcon className="w-5 h-5" />
-          <span>Back to Marketplace</span>
-        </Link>
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-600">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link href="/marketplace" className="hover:text-gray-900">
+                Marketplace
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link href={categoryLink.href} className="hover:text-gray-900">
+                {categoryLink.name}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-gray-900 font-medium">{vendor.name}</li>
+          </ol>
+        </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
@@ -178,6 +189,7 @@ export function VendorDetailPage({ vendor }: VendorDetailPageProps) {
             </div>
 
             {/* Scorecards */}
+            {(vendor.securityScore || vendor.performanceScore || vendor.supportScore) && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="100">
               {vendor.securityScore && (
                 <div className="bg-white rounded-xl p-6 shadow-lg">
@@ -207,8 +219,9 @@ export function VendorDetailPage({ vendor }: VendorDetailPageProps) {
                 </div>
               )}
             </div>
+            )}
 
-            {/* Verification Summary */}
+            {(vendor.verifiedAreas?.length || vendor.lastAuditDate || vendor.verificationTier) && (
             <div className="bg-white rounded-2xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="200">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Verification Summary</h2>
               <div className="space-y-4">
@@ -232,8 +245,7 @@ export function VendorDetailPage({ vendor }: VendorDetailPageProps) {
                 )}
               </div>
             </div>
-
-            {/* Features */}
+            )}
             {vendor.detailedFeatures && vendor.detailedFeatures.length > 0 && (
               <div className="bg-white rounded-2xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="300">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Features</h2>

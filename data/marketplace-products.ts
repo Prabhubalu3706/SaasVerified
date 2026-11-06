@@ -4,6 +4,8 @@
  * Last updated: 2024
  */
 
+import { toSlug } from "@/lib/slugs";
+
 export interface ProductScores {
   security: number;
   performance: number;
@@ -237,7 +239,7 @@ function getProductLogo(productName: string): string {
   }
   
   // Fallback: generate logo path from product name
-  const id = productName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const id = toSlug(productName);
   // Try .png first, then .svg as fallback
   return `/assets/marketplace/${id}.png`;
 }
@@ -259,7 +261,7 @@ export function productToVendor(product: MarketplaceProduct, category: string): 
   customer_types?: string[];
   verification?: ProductVerification;
 } {
-  const id = product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const id = toSlug(product.name);
   // Create a better description from best use cases
   const description = product.best_use_cases.length > 0 
     ? `Ideal for ${product.best_use_cases.join(", ").toLowerCase()}. Best suited for ${product.customer_types.join(" and ")}.`
@@ -2580,7 +2582,7 @@ export function productToVendorDetail(product: MarketplaceProduct, category: str
   }>;
   website?: string;
 } {
-  const id = product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const id = toSlug(product.name);
   const description = product.best_use_cases.length > 0 
     ? `Ideal for ${product.best_use_cases.join(", ").toLowerCase()}. Best suited for ${product.customer_types.join(" and ")}.`
     : `Comprehensive ${category.toLowerCase()} solution.`;
@@ -2610,7 +2612,7 @@ export function productToVendorDetail(product: MarketplaceProduct, category: str
     .filter(p => p.name !== product.name)
     .slice(0, 3)
     .map(p => ({
-      id: p.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+      id: toSlug(p.name),
       name: p.name,
       logo: getProductLogo(p.name),
       score: calculateRating(p.scores),
@@ -2647,7 +2649,7 @@ export function productToVendorDetail(product: MarketplaceProduct, category: str
 export function getVendorDetailById(id: string) {
   for (const categoryData of categoryProducts) {
     const product = categoryData.products.find(
-      p => p.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === id
+      (product) => toSlug(product.name) === id
     );
     if (product) {
       return productToVendorDetail(product, categoryData.category);
