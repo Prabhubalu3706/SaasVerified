@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
             <div className="relative w-32 h-10">
               <Image
                 src="/assets/saas-verified-logo.png"
-                alt="SaaS Verify Logo"
+                alt="SaaS Verify"
                 width={128}
                 height={40}
                 className="w-full h-full object-contain"

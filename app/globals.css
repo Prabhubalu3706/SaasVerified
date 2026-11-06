@@ -4,14 +4,11 @@
 
 @import 'aos/dist/aos.css';
 
-/* Ensure AOS elements are visible before JS loads and during navigation */
-[data-aos] {
+/* Keep content visible until AOS initializes so the first paint is not blank. */
+body:not(.aos-initialized) [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
   visibility: visible !important;
-}
-
-/* Only apply AOS initial hidden state after body has aos-initialized class */
-body.aos-initialized [data-aos] {
-  visibility: visible;
 }
 
 :root {

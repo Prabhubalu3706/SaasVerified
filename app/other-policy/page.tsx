@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { TermsTableOfContents } from "@/components/common/TermsTableOfContents";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Other Policies",
-  description: "Additional policies for SaaS Verify including Disclaimer, Cookie Policy, Grievance Redressal, and Vendor Verification Terms.",
-  openGraph: {
-    title: "Other Policies | SaaS Verify",
-    description: "Additional policies for SaaS Verify",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Other policies",
+  description:
+    "Disclaimer, cookie policy, grievance redressal, and vendor verification terms for SaaS Verify.",
+  path: "/other-policy",
+});
 
 export default function OtherPolicyPage() {
   const currentDate = new Date().toLocaleDateString('en-US', { 

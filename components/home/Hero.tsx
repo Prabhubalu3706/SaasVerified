@@ -4,10 +4,12 @@ import { useState, useEffect, useRef, type FormEvent } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
 import { useMembershipModal } from "@/contexts/MembershipModalContext";
 import { useSaaSRecommendationsModal } from "@/contexts/SaaSRecommendationsModalContext";
 import { useSearchParams } from "next/navigation";
 import { getEmailGuidance, isValidEmailFormat } from "@/lib/email-format";
+import { marketplaceHrefForLabel } from "@/lib/marketplace";
 
 export function Hero() {
   const [email, setEmail] = useState("");
@@ -464,8 +466,9 @@ export function Hero() {
               <div className="text-sm font-medium text-gray-600 pb-2">GET A VERIFIED SHORTLIST &nbsp;• &nbsp;SELECT YOUR CATEGORY</div>
               <div className="flex flex-wrap gap-3 mb-3">
                 {categories.slice(0, 3).map((category) => (
-                  <button
+                  <Link
                     key={category.name}
+                    href={marketplaceHrefForLabel(category.name)}
                     className="bg-white border border-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50 hover:border-gray-300 transition-colors flex items-center gap-2"
                   >
                     <Image
@@ -476,13 +479,14 @@ export function Hero() {
                       className="w-4 h-4"
                     />
                     {category.name}
-                  </button>
+                  </Link>
                 ))}
               </div>
               <div className="flex flex-wrap gap-3">
                 {categories.slice(3, 6).map((category) => (
-                  <button
+                  <Link
                     key={category.name}
+                    href={marketplaceHrefForLabel(category.name)}
                     className="bg-white border border-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50 hover:border-gray-300 transition-colors flex items-center gap-2"
                   >
                     <Image
@@ -493,7 +497,7 @@ export function Hero() {
                       className="w-4 h-4"
                     />
                     {category.name}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>

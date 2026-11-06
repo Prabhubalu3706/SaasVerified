@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { TermsTableOfContents } from "@/components/common/TermsTableOfContents";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Terms of Service",
-  description: "Terms and Conditions for SaaS Verify - Read our terms of service and legal agreements.",
-  openGraph: {
-    title: "Terms of Service | SaaS Verify",
-    description: "Terms and Conditions for SaaS Verify",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Terms of service",
+  description: "Terms and conditions for using SaaS Verify, including buyer and vendor obligations.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   const currentDate = new Date().toLocaleDateString('en-US', { 

@@ -75,7 +75,7 @@ export function Navbar() {
                 <div className="relative w-24 sm:w-28 md:w-32 h-10">
                   <Image
                     src="/assets/saas-verified-logo.png"
-                    alt="SaaS Verify Logo"
+                    alt="SaaS Verify"
                     width={128}
                     height={40}
                     className="w-full h-full object-contain"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import {
   HomeIcon,
@@ -53,8 +53,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
+import { marketplaceHrefForLabel } from "@/lib/marketplace";
+
 export function TopCategories() {
-  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
 
   // Categories matching the design - 50 items in 10x5 grid
@@ -210,11 +211,9 @@ export function TopCategories() {
                   const isSearching = searchQuery.trim();
 
                 return (
-                  <button
+                  <Link
                     key={category.name}
-                    onClick={() => {
-                      router.push(`/marketplace?category=${encodeURIComponent(category.name)}`);
-                    }}
+                    href={marketplaceHrefForLabel(category.name)}
                     className={`
                       ${widthClass}
                       h-[90px] sm:h-[100px] md:h-[110px] lg:h-[128px]
@@ -233,7 +232,7 @@ export function TopCategories() {
                     <span className="text-[10px] sm:text-[11px] md:text-xs text-gray-400 text-center font-normal leading-4 sm:leading-5">
                       {category.name}
                     </span>
-                  </button>
+                  </Link>
                 );
                 })
               ) : (

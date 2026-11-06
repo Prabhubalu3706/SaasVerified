@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { TermsTableOfContents } from "@/components/common/TermsTableOfContents";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "Privacy Policy for SaaS Verify - Learn how we collect, use, and protect your personal data in accordance with DPDP Act.",
-  openGraph: {
-    title: "Privacy Policy | SaaS Verify",
-    description: "Privacy Policy for SaaS Verify",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy policy",
+  description:
+    "How SaaS Verify collects, uses, and protects personal data under the DPDP Act.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   const currentDate = new Date().toLocaleDateString('en-US', { 

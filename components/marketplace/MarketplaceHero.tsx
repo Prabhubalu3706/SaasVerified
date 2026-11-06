@@ -4,10 +4,11 @@ import Image from "next/image";
 import { VendorLogoSlider } from "@/components/vendors/VendorLogoSlider";
 
 interface MarketplaceHeroProps {
-  // Removed search-related props as search is now in MarketplaceGrid
+  title?: string;
+  description?: string;
 }
 
-export function MarketplaceHero({}: MarketplaceHeroProps) {
+export function MarketplaceHero({ title, description }: MarketplaceHeroProps) {
 
   // Vendor logos for the slider - ordered for top/bottom rows
   const vendorLogos = [
@@ -84,10 +85,16 @@ export function MarketplaceHero({}: MarketplaceHeroProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6 lg:px-8 w-full">
         <div className="text-center mb-8" data-aos="fade-up">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
-          Find Verified SaaS Tools <br/><span className="text-[#12b76a] leading-tight">You Can Trust</span>
+            {title ?? (
+              <>
+                Find Verified SaaS Tools <br />
+                <span className="text-[#12b76a] leading-tight">You Can Trust</span>
+              </>
+            )}
           </h1>
           <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Browse our curated marketplace of verified software vendors. Every product has been thoroughly audited for your peace of mind.
+            {description ??
+              "Browse software by category, compare what each product does, and open a product page before you buy."}
           </p>
         </div>
 

@@ -3,6 +3,10 @@ import { VendorDetailPage } from "@/components/marketplace/VendorDetailPage";
 import { notFound } from "next/navigation";
 import { getVendorDetailById } from "@/data/marketplace-products";
 import { getVendorDetailById as getCatalogVendorDetailById, catalogData } from "@/data/catalog";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { getIndexableVendorPaths, resolveCategory, vendorLogoPath } from "@/lib/marketplace";
+import { toSlug } from "@/lib/slugs";
+import { absoluteUrl, metaDescription, pageMetadata } from "@/lib/seo";
 
 // Extended vendor data with all detail page fields
 interface VendorDetail {
@@ -329,20 +333,20 @@ export async function generateMetadata({
   }
 
   if (!vendor) {
-    return {
-      title: "Vendor Not Found | SaaS Verify",
-    };
+    return { title: "Vendor not found", robots: { index: false, follow: false } };
   }
 
-  return {
-    title: `${vendor.name} - Verified SaaS Vendor | SaaS Verify`,
-    description: vendor.fullDescription || vendor.description,
-    openGraph: {
-      title: `${vendor.name} - Verified SaaS Vendor`,
-      description: vendor.fullDescription || vendor.description,
-      type: "website",
-    },
-  };
+  return pageMetadata({
+    title: vendor.name,
+    description: metaDescription(vendor.fullDescription || vendor.description),
+    path: `/marketplace/${params.id}`,
+  });
+}
+
+export function generateStaticParams() {
+  return getIndexableVendorPaths().map(({ path }) => ({
+    id: path.replace("/marketplace/", ""),
+  }));
 }
 
 export default function VendorDetail({ params }: { params: { id: string } }) {
@@ -355,31 +359,22 @@ export default function VendorDetail({ params }: { params: { id: string } }) {
     if (catalogVendor) {
       // Transform catalog vendor to VendorDetail format
       vendor = {
-        id: catalogVendor.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+        id: toSlug(catalogVendor.name),
         name: catalogVendor.name,
         description: catalogVendor.description,
-        category: Object.keys(catalogData).find(cat => 
-          catalogData[cat].some(v => v.name === catalogVendor.name)
-        ) || 'Other',
-        logo: `/assets/vendor_logos/${catalogVendor.name.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '').charAt(0).toUpperCase() + catalogVendor.name.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '').slice(1).toLowerCase()}.png`,
-        rating: 4.5,
-        verified: true,
-        pricing: "Contact for pricing",
-        features: ["Cloud-based", "API Access"],
+        category: Object.keys(catalogData).find((cat) =>
+          catalogData[cat].some((entry) => entry.name === catalogVendor.name)
+        ) || "Other",
+        logo: vendorLogoPath(catalogVendor.name),
+        verified: false,
         website: catalogVendor.url,
         fullDescription: catalogVendor.description,
-        securityScore: 85,
-        performanceScore: 90,
-        supportScore: 88,
-        verificationTier: "Gold" as const,
-        verifiedAreas: ["Security", "Performance", "Support"],
-        lastAuditDate: "2024-01-15",
         detailedFeatures: [
           {
-            title: "Core Functionality",
-            description: catalogVendor.description
-          }
-        ]
+            title: "Overview",
+            description: catalogVendor.description,
+          },
+        ],
       };
     }
   }
@@ -393,6 +388,45 @@ export default function VendorDetail({ params }: { params: { id: string } }) {
     notFound();
   }
 
-  return <VendorDetailPage vendor={vendor} />;
+  const categoryLink = resolveCategory(vendor.category);
+
+  return (
+    <>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+              { "@type": "ListItem", position: 2, name: "Marketplace", item: absoluteUrl("/marketplace") },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: categoryLink.name,
+                item: absoluteUrl(categoryLink.href),
+              },
+              {
+                "@type": "ListItem",
+                position: 4,
+                name: vendor.name,
+                item: absoluteUrl(`/marketplace/${params.id}`),
+              },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: vendor.name,
+            applicationCategory: vendor.category,
+            description: vendor.fullDescription || vendor.description,
+            url: absoluteUrl(`/marketplace/${params.id}`),
+            ...(vendor.website ? { sameAs: vendor.website } : {}),
+          },
+        ]}
+      />
+      <VendorDetailPage vendor={vendor} />
+    </>
+  );
 }
 

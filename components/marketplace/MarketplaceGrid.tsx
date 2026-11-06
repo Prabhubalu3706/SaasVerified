@@ -1,7 +1,9 @@
 "use client";
 
 import { MarketplaceCard } from "./MarketplaceCard";
+import Link from "next/link";
 import { useEffect, useRef, useState, useMemo } from "react";
+import { categoryPath } from "@/lib/marketplace";
 import {
   BarsArrowUpIcon,
   BarsArrowDownIcon,
@@ -21,7 +23,7 @@ interface Vendor {
   logo: string;
   image?: string;
   rating?: number;
-  verified: boolean;
+  verified?: boolean;
   pricing?: string;
   features?: string[];
   website?: string;
@@ -50,15 +52,14 @@ export function MarketplaceGrid({
   searchQuery, 
   onSearchChange,
   filters,
-  onFiltersChange
 }: MarketplaceGridProps) {
   const [sortBy, setSortBy] = useState<SortOption>("relevance");
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [activeTab, setActiveTab] = useState("Discover");
-
-  // Get categories from catalog and add "Discover" as first tab
   const catalogCategories = getCategories();
   const tabs = ["Discover", ...catalogCategories];
+  const [activeTab, setActiveTab] = useState(
+    () => filters?.categories?.find((category) => tabs.includes(category)) ?? "Discover"
+  );
 
   // Sync active tab with category filter
   useEffect(() => {
@@ -145,28 +146,6 @@ export function MarketplaceGrid({
     handleScroll(); // Check initial state
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Handle tab click - update parent filters
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-    
-    // Update parent filters if we have the handler
-    if (onFiltersChange && filters) {
-      if (tab === "Discover") {
-        // Clear category filter for Discover tab
-        onFiltersChange({
-          ...filters,
-          categories: [],
-        });
-      } else {
-        // Set category filter for category tabs (tab name is the category name)
-        onFiltersChange({
-          ...filters,
-          categories: [tab],
-        });
-      }
-    }
-  };
 
   const sortedVendors = useMemo(() => {
     if (sortBy === "name-asc") {
@@ -274,9 +253,9 @@ export function MarketplaceGrid({
             }}
           >
             {tabs.map((tab) => (
-              <button
+              <Link
                 key={tab}
-                onClick={() => handleTabClick(tab)}
+                href={tab === "Discover" ? "/marketplace" : categoryPath(tab)}
                 className={`px-2.5 py-1.5 md:px-3 md:py-2 rounded-lg text-xs md:text-sm whitespace-nowrap border transition-colors bg-white ${
                   activeTab === tab
                     ? "border-[#12b76a] text-[#12b76a]"
@@ -284,7 +263,7 @@ export function MarketplaceGrid({
                 }`}
               >
                 {tab}
-              </button>
+              </Link>
             ))}
           </div>
         </div>

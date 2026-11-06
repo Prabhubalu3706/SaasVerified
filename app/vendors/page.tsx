@@ -1,5 +1,3 @@
-"use client";
-
 import { VendorsHero } from "@/components/vendors/VendorsHero";
 import { WhyVendorsGetVerified } from "@/components/vendors/WhyVendorsGetVerified";
 import { VerificationBadge } from "@/components/ui/VerificationBadge";
@@ -11,6 +9,14 @@ import { VendorPricingSummary } from "@/components/vendors/VendorPricingSummary"
 import { VendorFAQs } from "@/components/vendors/VendorFAQs";
 import { VendorFinalCTA } from "@/components/vendors/VendorFinalCTA";
 import { VendorModal } from "@/components/modals/VendorModal";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata({
+  title: "For vendors",
+  description:
+    "Apply for a SaaS Verify audit at no charge. Passing vendors can use the Trust Seal, which stays valid for one year.",
+  path: "/vendors",
+});
 
 export default function VendorsPage() {
   return (
